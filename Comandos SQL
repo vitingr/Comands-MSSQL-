@@ -1,0 +1,782 @@
+------------------------------------------------- AULA 01 ---------------------------------------------------------------------------
+
+SELECT  
+-- SQL Server, Postgres, Oracle, mySQL
+
+SELECT coluna1,coluna2
+FROM tabela
+
+-- Selecionar coluna1 e coluna2 da "tabela"
+
+SELECT *
+FROM tabela 
+
+-- O " * ", serve para retornar todas colunas do Banco de Dados
+
+### DESAFIO 1 ### 
+A EQUIPE DE MARKETING PRECISA DE FAZER UMA PESQUISA SOBRE NOMES MAIS COMUNS DE SEUS CLIENTES E PRECISA DO NOME E SOBRENOME DE TODOS OS CLIENTES QUE ESTÃO CADASTRADOS EM SEU SISTEMA;
+
+Answer = CORRETO
+SELECT firstName,lastName
+FROM person.Person;
+
+------------------------------------------------- AULA 02 ---------------------------------------------------------------------------
+
+SELECT DISTINCT coluna1,coluna2
+FROM tabela
+
+-- Dessa forma não é retornado os dados duplicados 
+
+### DESAFIO 2 ### 
+QUANTOS SOBRENOMES ÚNICOS NÓS TEMOS EM NOSSA TABELA PERSON.PERSON;
+
+Answer = 
+SELECT DISTINCT lastName
+FROM person.person;
+
+------------------------------------------------- AULA 03 ---------------------------------------------------------------------------
+
+SELECT coluna1,coluna2,coluna_n
+FROM tabela
+WHERE {condicao}
+
+/*
+
+===================================
+    OPERADORES  -   DESCRIÇÃO
+===================================
+
+=               IGUAL
+>               MAIOR QUE 
+<               MENOR QUE 
+>=              MAIOR QUE OU IGUAL
+<=              MENOR QUE OU IGUAL
+<>              DIFERENTE DE  
+AND             OPERADOR LÓGICO E 
+OR              OPERADOR LÓGICO OU
+
+*/
+
+### DESAFIO 3 ###
+A EQUIPE DE PRODUÇÃO DE PRODUTOS PRECISA DO NOME DE TODAS PEÇAS QUE PESAM MAIS QUE 500KG MAS NÃO MAIS QUE 700KG PARA INSPEÇÃO
+
+Answer = 
+
+SELECT Name
+FROM Production.Product
+WHERE Weight > 500 and Weight <= 700
+
+### DESAFIO 4 ###
+FOI PEDIDO PELO MARKETING UMA RELAÇÃO DE TODOS OS EMPREGADOS QUE SÃO CASADOS E SÃO ASALARIADOS 
+
+Answer = 
+
+SELECT *
+FROM HumanResources.Employee
+WHERE MaritalStatus = 'M' and SalariedFlag = '1';
+
+### DESAFIO 5 ###
+UM USUÁRIO CHAMADO PETER KREBS ESTÁ DEVENDO UM PAGAMENTO, CONSIGO EMAIL DELE PARA QUE POSSAMOS ENVIAR UMA COBRANÇA
+
+Answer =
+
+SELECT BusinessEntityID
+FROM person.Person
+WHERE FirstName = 'Peter' and LastName = 'Krebs';
+
+SELECT EmailAddress
+FROM person.EmailAddress
+WHERE BusinessEntityID = '26';
+
+------------------------------------------------- AULA 04 ---------------------------------------------------------------------------
+
+-- COUNT; Serve para retornar o número de linhas que bate com a condição dada.
+-- SINTAXE:
+
+SELECT COUNT(*) -- Contagem de todas as colunas da tabela
+FROM tabela
+
+SELECT COUNT(DISTINCT coluna1)
+FROM TABELA
+
+### DESAFIO 6 ###
+EU QUERO SABER QUANTOS PRODUTOS TEMOS CADASTRADOS EM NOSSA TABELA DE PRODUTOS (production.product)
+
+Answer = 
+
+SELECT COUNT(*)
+FROM production.Product
+
+### DESAFIO 7 ###
+EU QUERO SABER QUANTOS TAMANHOS DE PRODUTOS TEMOS CADASTRADOS EM NOSSA TABELA (production.product)
+
+Answer = 
+
+SELECT COUNT(Size)
+FROM production.Product;
+
+### DESAFIO 8 ###
+EU QUERO SABER QUANTOS TAMANHOS DIFERENTES DE PRODUTOS EU TENHO CADASTRADO EM NOSSA TABELA (production.product)
+
+Answer = 
+
+SELECT COUNT(DISTINCT Size)
+FROM production.Product;
+
+------------------------------------------------- AULA 05 ---------------------------------------------------------------------------
+
+-- TOP; Serve para retornar a quantidade mencionada de itens de uma tabela localizados de cima para baixo
+
+SELECT TOP 10 *
+FROM tabela
+
+------------------------------------------------- AULA 06 ---------------------------------------------------------------------------
+
+-- ORDER BY; Permite que você ordene os resultados por alguam coluna em ordem crescente ou decrescente 
+-- SINTAXE:
+
+SELECT tabela1,tabela2
+FROM tabela
+ORDER BY coluna1 asc/desc
+
+### DESAFIO 9 ###
+DESCOBRIR QUAIS SÃO OS IDS DOS 10 PRODUTOS MAIS CAROS DA LISTA
+
+Answer = 
+
+SELECT TOP 10 ProductID
+FROM production.product
+ORDER BY ProductID asc
+
+### DESAFIO 10 ###
+OBTER O NOME E O NÚMERO DO PRODUTO DOS PRODUTOS QUE TEM O PRODUCTID ENTRE 1~4
+
+Answer = 
+
+SELECT TOP 4 Name,ProductNumber
+FROM Production.Product
+ORDER BY ProductID asc;
+
+------------------------------------------------- AULA 07 ---------------------------------------------------------------------------
+
+-- BETWEEN; É utilizado para encontrar um valor entre um valor mínimo e um valor máximo
+-- SINTAXE: valor BETWEEN ${min} AND ${max}
+
+/*
+
+É a mesma coisa que dizer:
+valor >= mínimo AND valor <= máximo
+
+*/
+
+Exemplos: 
+
+SELECT * 
+FROM Production.Product
+WHERE ListPrice BETWEEN 1000 and 1500;
+
+SELECT * 
+FROM Production.Product
+WHERE ListPrice NOT BETWEEN 1000 and 1500;
+
+SELECT *
+FROM HumanResources.Employee
+WHERE HireDate BETWEEN '2009/01/01' and '2010/01/01'
+ORDER BY HireDate asc;
+
+------------------------------------------------- AULA 08 ---------------------------------------------------------------------------
+
+-- IN; Nós usamos o operador IN junto com o WHERE, para verificar se um valor correspodem com qualquer valor passado na lista de valores.
+-- SINTAXE; valor IN (valor1,valor2) / valor IN ('BLUE';'RED') / valor IN (SELECT valor FROM nomeDaTabela)
+
+Exemplos: 
+
+SELECT *
+FROM Person.Person
+WHERE BusinessEntityID IN (2,7,13)
+
+SELECT *
+FROM Person.Person
+WHERE BusinessEntityID NOT IN (2,7,13)
+
+------------------------------------------------- AULA 10 ---------------------------------------------------------------------------
+
+-- LIKE; Vamos dizer que você quer encontrar uma pessoa no banco de dados que você sabe que o nome ela era ovi... alguma coisa 
+-- SINTAXE;
+
+SELECT *
+FROM person.Person
+WHERE FirstName like 'ovi%'
+
+-- Caso Você só saiba o final do nome do camarada, pode usar;
+
+SELECT *
+FROM person.Person
+WHERE FirstName like '%to'
+
+-- Caso você só saiba uma parte do meio do nome do cara, ou se não lembra se faz parte do começo ou do fim, n tem problema primo, quem ta triste não ta mais! Faz isso:
+
+SELECT *
+FROM person.Person
+WHERE FirstName like '%essa%'
+
+-- Podemos usar o "_" para fazer combinações, ou seja, só vai substituir somente um caractere, tipo se quiser um nome com mais letras dps coloca o %, se quiser somente um coloca o _, tipo arnol"d":
+
+
+SELECT *
+FROM person.Person
+WHERE FirstName like '%ro_'
+
+------------------------------------------------- AULA 11 ---------------------------------------------------------------------------
+
+-- FUNDAMENTOS SQL (DESAFIO DA FASE 1)
+
+### DESAFIO 11 ### -> Quantos Produtos temos cadastrado no sistema que custam mais que U$1500 dolares?
+
+Answer = 
+
+SELECT COUNT(ListPrice)
+FROM Production.Product
+WHERE ListPrice > 1500
+
+### DESAFIO 12 ### -> Quantas pessoas temos com o sobrenome que inicia com a letra P?
+
+Answer = 
+
+SELECT COUNT(LastName)
+FROM person.Person
+WHERE LastName like 'p%'
+
+### DESAFIO 13 ### -> Em quantas cidades únicas estão cadastrados nossos CLIENTES
+
+Answer =
+
+SELECT COUNT(DISTINCT City)
+FROM person.Address
+
+### DESAFIO 14 ### -> Quais são as cidades únicas que temos cadastradas em nosso sistema 
+
+Answer =
+
+SELECT DISTINCT City
+FROM person.Address
+
+### DESAFIO 15 ### -> Quantos produtos vermelhos tem preço entre 500 a 1000 dólares? 
+
+Answer = 
+
+SELECT COUNT(*)
+FROM production.Product
+WHERE color = 'red'
+AND listPrice BETWEEN 500 and 1000
+
+------------------------------------------------- AULA 12 ---------------------------------------------------------------------------
+
+-- MIN; Vai retornar o menor valor
+-- MAX; Vai retornar o maior valor 
+-- SUM; Soma todas as linhas e retorna o resultado
+-- AVG; Retorna a média de todos os valores 
+/*
+
+Funções de Agregação basicamente agregam ou combinam dados de uma tabela em 1 resultado só
+
+*/
+
+SELECT TOP 10 sum(linetotal) AS "SOMA"
+FROM Sales.SalesOrderDetail
+
+SELECT TOP 10 MIN(linetotal)
+FROM Sales.SalesOrderDetail
+
+------------------------------------------------- AULA 13 ---------------------------------------------------------------------------
+
+-- GROUP BY; Ele basicamente vai dividir o resultado da sua pesquisa em grupos. Exemplo: Para cada grupo você pode aplicar uma função de agregação, por exemplo: Calcular soma dos itens ou contar o número de itens naquele grupo
+
+-- Sintaxe:
+
+SELECT coluna1,funcaoAgregacao(coluna2)
+FROM {nomeTabela}
+GROUP BY coluna1
+
+Exemplo = 
+SELECT SpecialOfferID, SUM(UnitPrice) AS 'SOMA'
+FROM Sales.SalesOrderDetail
+GROUP BY SpecialOfferID
+-- VAI SOMAR TODOS OS VALORES DE UNIT PRICE PELO ID PROMOCIONAL
+
+Vamos Dizer que eu quero saber quantos de cada produto foi vendido até hoje: 
+SELECT ProductID, COUNT(ProductId) AS 'Contagem'
+FROM Sales.SalesOrderDetail
+GROUP BY ProductID
+
+Vamos dizer que eu quero saber quantos nomes de cada nome temos cadastrados em nosso banco de dados:
+SELECT FirstName, COUNT(FirstName) AS 'NOMES'
+FROM person.Person
+GROUP BY FirstName
+
+Na tabela production.product eu quero saber a média de preço para produtos que são pratas (silver):
+SELECT color,AVG(ListPrice)
+FROM Production.Product
+WHERE Color = 'Silver'
+GROUP BY Color
+
+### DESAFIO 16 ### -> Eu Preciso saber quantas pessoas tem o mesmo MiddleName agrupadas por MiddleName
+
+Answer = 
+
+SELECT MiddleName, COUNT(MiddleName) AS 'Quantidade'
+FROM person.Person
+GROUP BY MiddleName
+
+### DESAFIO 17 ### -> Eu Preciso saber em média qual é a quantidade(quantity) que cada produto é vendido na loja
+
+Answer = 
+
+SELECT ProductID, AVG(ProductID) AS 'Média'
+FROM Sales.SalesOrderDetail
+GROUP BY ProductID
+
+### DESAFIO 18 ### -> Eu quero saber qual foram as 10 vendas que no total tiveram os maiores valores de venda (line total) por produto do maior para o menor
+
+Answer = 
+
+SELECT TOP 10 ProductID, SUM(linetotal) AS 'Valor'
+FROM Sales.SalesOrderDetail
+GROUP BY ProductID
+ORDER BY SUM(linetotal) desc
+
+### DESAFIO 19 ### -> Eu preciso saber quantos produtos e qual a quantidade média de produtos que temos cadastrados em nossas ordem de serviço (WordOrder), agrupador por ProductID
+
+Answer = 
+
+SELECT ProductID, COUNT(ProductID) as 'Contagem', AVG(Orderqty) as 'Média'
+FROM Production.WorkOrder
+GROUP BY ProductID
+
+------------------------------------------------- AULA 14 ---------------------------------------------------------------------------
+
+-- Having; É basicamente muito usado em junção com o Group By para filtrar resultados de um agrupamento. De uma forma mais simples eu gosto de entender ele como basicamente um WHERE para dados agrupados.
+-- Sintaxe;
+
+SELECT coluna1,funcaoAgregacao(coluna2)
+FROM nomeTabela
+GROUP BY coluna1
+HAVING condicao
+
+/* 
+A Grande Diferença entre HAVING e WHERE;
+É que o GROUP BY é aplicado depois que os dados já foram agrupados, enquanto o WHERE é aplicado antes dos dados serem agrupados. Vamos dizer que queremos saber quais nome no sistema tem uma ocorrência maior que 10 vezes:
+*/
+
+SELECT FirstName, COUNT(FirstName) as 'Quantidade'
+FROM person.Person
+GROUP BY FirstName
+HAVING COUNT(FirstName) > 10
+
+Exemplo: Queremos saber quais produtos no total de vendas estão entre 162k e 500k;
+
+SELECT ProductID, SUM(LineTotal) as 'Total'
+FROM Sales.SalesOrderDetail
+GROUP BY ProductID
+HAVING SUM(LineTotal) between 162000 and 500000
+
+Exemplo: Você quer saber quais nomes no sistema tem uma ocorrência maior que 10 vezes, porém somente o título é 'Mr';
+
+SELECT FirstName, COUNT(FirstName) as 'Quantidade'
+FROM person.Person
+WHERE Title = 'Mr.'
+GROUP BY FirstName
+HAVING COUNT(FirstName) > 10
+
+### DESAFIO 20 ### ->  Estamos querendo identificar as provincias(StateProvinceID) com o maior número de cadastros no nosso sistema, então é preciso encontrar quais províncias (StateProvinceID) estão registradas em nosso banco de dados mais de 1000 vezes
+
+Answer =
+
+SELECT StateProvinceID, COUNT(StateProvinceID) as 'Quantidade'
+FROM person.Address
+GROUP BY StateProvinceID
+HAVING COUNT(stateProvinceID) > 1000
+
+### DESAFIO 21 ### -> Sendo que se trata de uma multinacional os gerentes querem saber quais produtos (ProductID) não estão trazendo em média no mínimo 1 milhão em total de vendas (lineTotal)
+
+Answer = 
+
+SELECT ProductID, AVG(lineTotal)
+FROM Sales.SalesOrderDetail
+GROUP BY ProductID
+HAVING AVG(lineTotal) < 1000000
+
+------------------------------------------------- AULA 15 ---------------------------------------------------------------------------
+
+-- AS; Serve basicamente para renomear as colunas em caso de um Select 
+
+------------------------------------------------- AULA 16 ---------------------------------------------------------------------------
+
+-- JOIN; Existem 3 tipos de JOIN, Eles são bastante úteis para realizar a junção de tabelas e outros dados vindos de outras tabelas ->
+
+----------------
+
+INNER JOIN;
+
+SELECT C.ClienteID,C.Nome,E.Rua,E.Cidade
+FROM Cliente CADASTRADO
+INNER JOIN Endereço E ON E.EnderecoID = C.EnderecoID
+
+-- RESPOSTA: | 2 | Bruno | Rua Norte | São Paulo |
+
+Exemplo: Quero pegar o BusinessEntityID,FirstName,LastName e EmailAddress:
+
+SELECT p.BusinessEntityID,p.FirstName,p.LastName,pe.EmailAddress
+FROM Person.Person as P
+INNER JOIN Person.EmailAddress as PE on p.BusinessEntityID = pe.BusinessEntityID
+
+Exemplo: Vamos dizer que nós queremos os nomes dos produtos e as informações de suas subcategorias 
+
+SELECT p.ProductSubcategoryID,p.Name,p.ListPrice,s.Name
+FROM Production.Product as P
+INNER JOIN Production.ProductSubcategory as S on p.ProductSubcategoryID = s.ProductSubcategoryID
+
+Exemplo: Quero juntar 2 tabelas totalmente, sem nenhum filtro (Produto Cartesiano)
+
+SELECT TOP 10 *
+FROM Person.BusinessEntityAddress as BA
+INNER JOIN person.BusinessEntityAddress as PA ON PA.AddressID = BA.AddressID
+
+### DESAFIO 22 ### -> Quero que traga uma tabela que apresente as seguintes informações: BusinessEntityID, Name, PhoneNumberTypeID, PhoneNumber, tudo em resultado só
+
+Answer = 
+
+SELECT p.BusinessEntityID,p.PhoneNumberTypeID,p.PhoneNumber,pt.Name
+FROM person.PersonPhone as P
+INNER JOIN person.PhoneNumberType as PT ON pt.PhoneNumberTypeID = p.PhoneNumberTypeID
+
+### DESAFIO 23 ### -> Você tem que trazer as informações: AddressID,City,StateProvinceID,Nome do Estado
+
+Answer = 
+
+SELECT pa.AddressID,pa.City,ps.StateProvinceID,ps.Name
+FROM person.StateProvince as PS
+INNER JOIN person.Address as PA ON pa.StateProvinceID = ps.StateProvinceID
+
+----------------
+
+OUTER JOIN; Ele é o JOIN mais completo, ou seja, que vai incluir o máximo de informações possíveis, ele irá retornar um conjunto de todos registros correspondentes da TabelaA e TabelaB quando são iguais. E além disso se não houver valores correspondentes, ele irá preencher esse lado com NULL
+
+SELECT * FROM TabelaA 
+FULL OUTER JOIN TabelaB ON TabelaA.nome = TabelaB.nome
+
+-----------------
+
+SELF JOIN; Retorna um conjunto de todos os registros da TabelA, e além disso, os registros correspondes (Quando disponíveis) na TabelaB. Se não houver registros correspondes ele vai simplesmente preencher com NULL, ou seja ele é parecido com o Full Outer Join, porém ele remove a tabela B no caso
+
+------------------------------------------------- AULA 19 ---------------------------------------------------------------------------
+
+-- UNION; É um operador que ajuda a combinar dados, a grande diferença é que ele permite combinar 2 resultados de SELECT em somente um resultado
+-- Sintaxe:
+
+SELECT coluna1,coluna2
+FROM tabela1
+UNION
+SELECT coluna1,coluna2
+FROM tabela2
+
+Exemplo:
+SELECT [ProductID], [Name], [ProductNumber] FROM
+Production.Product WHERE Name like '%Chain%'
+UNION
+SELECT [ProductID], [Name], [ProductNumber] FROM
+Production.Product WHERE Name like '%Decal%'
+
+Vai sair 7 resultados, pois vai juntar o primeiro resultado com o segundo, ou seja, 5 + 2 = 7
+
+SELECT FirstName, Title
+FROM person.person
+WHERE Title = 'Mr.'
+UNION
+SELECT FirstName, Title
+FROM person.person
+WHERE MiddleName = 'A'
+
+------------------------------------------------- AULA 20 ---------------------------------------------------------------------------
+
+-- SELF JOIN; É uma maneira de você agrupar dados ou ordernar dados dentro da mesma tabela, ou seja, tipo um filtro 
+
+Sintaxe:
+SELECT NOME_COLUNA
+FROM TABELA A, TABELA B
+WHERE CONDICAO
+
+Exemplo: 
+
+SELECT A.ContactName,A.Region,B.ContactName
+FROM Customers A, Customers B
+WHERE A.Region = B.Region
+
+------------------------------------------------- AULA 21 ---------------------------------------------------------------------------
+
+-- SUBQUERY; Ele serve para fazer Queries mais picas, é um tipo um Query dentro de outra Query
+
+### DESAFIO 24 ### -> Monte um relatório para mim de todos os produtos cadastrados que tem preço de venda acima da média 
+
+Answer = 
+
+SELECT * 
+FROM Production.Product
+WHERE ListPrice > (SELECT AVG(ListPrice) FROM Production.Product)
+
+### DESAFIO 25 ### -> Quero saber o nome dos meus funcionários que tem o cargo de "Desgin Engineer"
+
+Answer = 
+
+SELECT FirstName
+FROM Person.Person
+WHERE BusinessEntityID IN (SELECT BusinessEntityID FROM HumanResources.Employee WHERE JobTitle = 'Design Engineer')
+ 
+ou pode usar o join TabelaB
+
+SELECT PP.FirstName
+FROM Person.Person as PP
+INNER JOIN HumanResources.Employee as E ON PP.BusinessEntityID = E.BusinessEntityID AND E.JobTitle = 'Design Engineer'
+
+### DESAFIO 26 ### -> Encontre todos os endereços que estão cadastrados no estado de 'Alberta'
+
+Answer = 
+
+SELECT *
+FROM person.Address
+WHERE StateProvinceID IN (SELECT StateProvinceID FROM Person.StateProvince WHERE Name = 'Alberta')
+
+------------------------------------------------- AULA 22 ---------------------------------------------------------------------------
+
+-- DATEPART; É relacionado com o uso de data
+
+Exemplo: Vamos dizer que eu quero saber o m%es que tal pedido for realizado
+
+SELECT SalesOrderID, DATEPART(month, OrderDate) as Mes
+FROM Sales.SalesOrderHeader
+
+Exemplo: Calcular a média do valor vendido pelos meses
+SELECT AVG(TotalDue) as Media, DATEPART(month /*year,day, etc...*/, OrderDate) as Mes
+FROM Sales.SalesOrderHeader
+GROUP BY DATEPART(month, OrderDate)
+ORDER BY Mes
+
+------------------------------------------------- AULA 23 ---------------------------------------------------------------------------
+
+-- Operações em STRING E NUMBER
+
+Tipos de Dados:
+
+1. Boleanos
+2. Caracteres
+3. Número
+4. Temporais
+
+## 1. Boleanos  
+-> Por padrão, ele é inicializado como nulo, e pode receber tanto 1 ou 0 (BIT)
+
+## 2. Caractere 
+-> Tamanho Fixo - Char / Permite inserir até uma quantidade fixa de caracteres e sempre ocupa todo o espaço reservado 10/50, tamanhos variáveis - varchar ou nvarchar // Permite inserir até uma quantidade que for definida, porém só usa o espaço que for preenchido 10/50.
+
+## 3. Números
+### Valores Exatos 
+
+1. TINYINT - Não tem parte valor fracionados (ex: 1.43, 24.23) somente 1,123123,324234,313123 etc...
+2. SMALLINT - Mesma coisa porém limite maior
+3. INT - Mesma coisa porém limite maior
+4. BIGINT - Mesma coisa porém limite maior
+5. NUMERIC OU DECIMAL - Valores exatos, porém permite per parte fracionados, que também pode ser específicado a precisão e escala (escala é o número de dígitos na parte fracional) - ex: NUMERIC (5,2) 113,44
+
+### Valores Aproximados 
+1. REAL - Tem precisão aproximada de até 15 dígitos 
+2. FLOAT - Mesmo conceito de REAL
+
+## 4. Temporais 
+DATE - Armazena data no formato aaaa/mm/dd
+DATETIME - Armazena data e horas no formato aaaa/mm/dd:hh:mm:
+DATETIME2 - Data e Horas com adição de milissegundos no formato aaaa/mm/dd:hh:mm:sssssss
+SMALLDATETIME - Data e Horas nos respeitando o limite entre '1900-01-01:00:00:00' até '2079-06-06:23:59:59'
+
+------------------------------------------------- AULA 24 ---------------------------------------------------------------------------
+
+-- CRIAÇÃO DE TABELAS:
+
+* O que é uma Chave Primária?
+
+-> Uma chave primária é basicamente um coluna ou grupo de colunas, usada para identificar unicamente uma linha em uma tabela;
+
+-> Você consegue criar essas chaves primárias através de restrições (ou contraints, em inglês), que são regras que você define quando está criando uma coluna;
+
+-> Assim quando você faz isso, você está criando um índice único para aquela coluna ou grupo de colunas;
+
+Como Criar:
+
+CREATE TABLE nome_tabela (
+    nomeColuna tipoDeDados PRIMARY KEY
+    nomeColuna tipoDeDados ...
+)
+
+* O que é uma Chave Estrangeira?
+
+-> Uma chave estrangeira é uma coluna ou grupo de colunas em uma tabela que identifica unicamente uma linha em outra tabela;
+
+-> Ou seja, uma chave estrangeira é definida em uma tabela onde ela é apenas uma referência e não contém todos os dados ali;
+
+-> Então uma chave estrangeira é simplesmente uma coluna ou grupo de colunas que é uma chave primária em outra tabela.
+
+-> A tabela que contém a chave estrangeira é chamada de tabela referênciadora ou tabela filho. E a tabela na qual a chave estrangeira é referenciada é chamada de tabela referenciada ou tabela pai.
+
+-> Uma tabela pode ter mais de uma chave estrangeira dependendo de seu relacionamento com as outras demais tabelas.
+
+* Regrinhas:
+
+-> No SQL Server você define uma chave estrangeira atravez de um "Foreign Key Constraint" ou Restrição de chave estrangeira
+
+-> Uma Restrição de Chave Estrangeira indica que os valores em uma coluna ou gurpo de colunas na tabela filho correspondem aos valores na tabela pai
+
+-> Nos podemos entender que uma chave estrangeira mantém a "Integridade Referencial"
+
+------------------------------------------------- AULA 25 ---------------------------------------------------------------------------
+
+-- CREATE TABLE; É uma função para criar tabelas
+
+Sintaxe:
+
+CREATE TABLE nomeTabela (
+    coluna1 tipo restricaoDaColuna,
+    coluna2 tipo restricaoDaColuna,
+    coluna3 tipo ,
+    ...
+)
+
+* Principais tipos de restrições que podem ser aplicadas:
+
+-> NOT NULL: Não permite valores nulos
+-> UNIQUE: Força para que todos os valores dentro da coluna sejam diferentes entre si
+-> PRIMARY KEY: Uma Junção de NOT NULL & UNIQUE
+-> FOREIGN KEY: Identifica unicamente uma linha em outra tabela
+-> CHECK: Força uma condição específica em outra coluna (Tipo permitir somente valores acima de 10, etc...)
+-> DEFAULT: Força um valor padrão quando nenhum valor é passado 
+
+------------------------------------------------- AULA 26 ---------------------------------------------------------------------------
+
+-- INSERT INTO; Serve para quando você já tem uma tabela e deseja inserir dados nela, ou caso você queira criar uma tabela usando INSERT INTO
+
+Sintaxe:
+
+INSERT INTO nomeTabela(coluna1,coluna2,...)
+VALUES (valor1,valor2)
+
+Inserir info de uma tabela dentro de outra:
+INSERT INTO TabelaA (coluna1)
+SELECT coluna2
+FROM TabelaB
+
+------------------------------------------------- AULA 27 ---------------------------------------------------------------------------
+
+-- UPDATE; Caso voc6e adicionou um dado, e deseja altera-lo
+
+Sintaxe:
+
+UPDATE nomeTabela
+SET coluna1 = valor1
+    coluna2 = valor2
+WHERE condicao
+
+------------------------------------------------- AULA 28 ---------------------------------------------------------------------------
+
+-- DELETE; Serve para deletar um coluna ou linha:
+
+Sintaxe:
+DELETE FROM nomeTabela
+WHERE condicao
+
+------------------------------------------------- AULA 29 ---------------------------------------------------------------------------
+
+-- ALTER TABLE; Serve para alterar a estrutura de uma tabela. 
+
+Sintaxe:
+
+ALTER TABLE nomeTabela
+${ACAO}
+
+* Exemplos do que pode ser feito:
+- Adicionar, remover ou alterar uma coluna
+- Set valores padrões para uma coluna
+- Add ou Remover restrições de colunas
+- Renomear uma tabela
+
+Por exemplo se quero colocar uma nova coluna:
+
+ALTER TABLE youtube
+add ativo BIT
+
+Alterar limite varchar:
+
+ALTER TABLE youtube
+ALTER COLUMN categoria varchar(300) not null
+
+Mudar nome da coluna:
+
+EXEC sp_RENAME 'nomeTabela.nomeColunaAtual', 'nomeColunaNova', 'COLUMN'
+
+EXEC sp_RENAME 'youtube.Nome', 'youtube.NomeCanal', 'COLUMN'
+
+------------------------------------------------- AULA 30 ---------------------------------------------------------------------------
+
+-- DROP TABLE; Dropar(Excluir) uma tabela do Banco De Dados.
+
+Sintaxe:
+
+DROP TABLE nomeTabela
+
+Para dropar somente o conteúdo, e não a tabela em si, usar:
+
+TRUNCATE TABLE nomeTabela
+
+------------------------------------------------- AULA 31 ---------------------------------------------------------------------------
+
+-- CHECK CONSTRAINT: Criar restrições de valores que podem ser inseridos em uma coluna de uma tabela em banco de dados quando você está criando uma tabela nova.
+
+Sintaxe:
+
+CREATE TABEL CarteiraMotorista (
+    Id int NOT NULL,
+    Nome varchar(255) NOT NULL,
+    Idade int CHECK ( Idade >= 18 )
+)
+
+------------------------------------------------- AULA 32 ---------------------------------------------------------------------------
+
+-- UNIQUE; Cria Colunas únicas, porém diferentes de uma primary key, pode existir várias colunas com a restriçao unique
+
+Sintaxe:
+
+CREATE TABEL CarteiraMotorista (
+    Id int NOT NULL,
+    Nome varchar(255) NOT NULL,
+    Idade int CHECK ( Idade >= 18 )
+    CodigoCNH int NOT NULL UNIQUE
+)
+
+------------------------------------------------- AULA 33 ---------------------------------------------------------------------------
+
+-- VIEWS; Basicamente são uma forma de extrair informações específicas de uma tabela ja existente, onde no caso eu não preciso de todas as informações de uma tabela, muito comum ser utilizado durante alguns relatórios 
+
+Sintaxe:
+
+CREATE VIEW [Pessoas Simplificado] AS 
+SELECT FirstName, MiddleName, LastName
+FROM Person.Person
+WHERE Title = 'Ms.'
+
+SELECT * FROM [Pessoas Simplificado]
+
+
+
+=====================================================================================================================================
+
+                                                    F I M
+
+=====================================================================================================================================
+ 
